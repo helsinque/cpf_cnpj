@@ -3,8 +3,8 @@
 
 Validador PHP para CPF e CNPJ agnóstico de framework. É uma lib criada para uma validação simples de CPF e CNPJ.
 
-- Valida CPF com ou sem mácara.
-- Valida CNPJ com ou sem mácara. 
+- Valida CPF com ou sem máscara.
+- Valida CNPJ com ou sem máscara. 
 
 ## TL;DR 
 
