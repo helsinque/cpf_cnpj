@@ -6,7 +6,7 @@ use Validators\Validator as validate;
 
 $data = new validate;
 
-$numero = "355.267.688-05";
+$numero = "xxx.xxx.xxx-xx";
 
 try
 {
