@@ -1,5 +1,5 @@
 {
-    "name": "helsinque/CPF-CNPJ",
+    "name": "helsinque/cpf-cnpj",
     "description": "Validador para CPF e CNPJ agnstico de framework",
     "type": "library",
     "license": "MIT",
