@@ -16,7 +16,7 @@ class ValidateCpf extends FunctionsValidate
     *  responsável por iniciar validação
     */
     public function validateCPF($number)
-     {
+    {
 
         $this->number = $number;
 

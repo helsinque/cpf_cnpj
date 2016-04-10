@@ -11,8 +11,8 @@ use Validators\Cnpj\ValidateCnpj;
 
 class Validator 
 {
+
 	private $data;
-    private $Erro = false;
 
     /**
     *  Inicializa valor da propriedade
