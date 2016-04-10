@@ -1,0 +1,22 @@
+{
+    "name": "helsinque/validator",
+    "description": "Validador para CPF e CNPJ agnstico de framework",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "hel-sys",
+            "email": "helsinquedeveloper@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.6.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Validators\\": "src/Validators",
+            "Exceptions\\": "src/Exceptions"
+        }
+    }
+}
