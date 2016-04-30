@@ -4,7 +4,7 @@ namespace Validators;
 
 use Validators\Cpf\ValidateCpf;
 use Validators\Cnpj\ValidateCnpj;
-
+use Exceptions\DocumentValidationException;
 /**
 *  Classe para implementação de validadores
 */
@@ -22,7 +22,7 @@ class Validator
         $this->data = $number;
     } 
     /**
-    *  Válida um documento do tipo Cnpj
+    *  Válida um documento do tipo CNPJ
     */
     public function validateCnpj($parameter)
     {
@@ -30,16 +30,23 @@ class Validator
         if (!empty($parameter))
         {            
             $this->initialize($parameter);
-            $cnpj = new ValidateCnpj();
 
-            return $cnpj->validateCNPJ($this->data);
+            try {
+                
+                $cnpj = new ValidateCnpj();
+                return $cnpj->validateCNPJ($this->data);
+
+            } catch (DocumentValidationException $e) {
+                return $e->getMessage();
+            }
+            
         }
 
         return "Informe um número para validação";
         
     }
     /**
-    *  Válida um documento do tipo Cpf
+    *  Válida um documento do tipo CPF
     */
     public function validateCpf($parameter)
     {
@@ -47,8 +54,15 @@ class Validator
         if (!empty($parameter))
         {
             $this->initialize($parameter);
-            $cpf = new ValidateCpf();
-            return$cpf->validateCPF($this->data);
+
+            try {
+
+                $cpf = new ValidateCpf();
+                return$cpf->validateCPF($this->data);
+                
+            } catch (DocumentValidationException $e) {
+                return $e->getMessage();
+            }
 
         }
 

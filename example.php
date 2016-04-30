@@ -6,25 +6,12 @@ use Validators\Validator as validate;
 
 $data = new validate;
 
-$numero = "xxx.xxx.xxx-xx";
-
-try
-{
-	$return=  $data->validateCnpj($numero);
-
-} catch (Exception $e)
-{
-	try
-	{
-		$return=  $data->validateCpf($numero);
-
-	} catch (Exception $e) {
+$numero = "27.732.114/0001-82454";
 
 
-		$return= $e->getMessage();
-	}
+		$return=  $data->validateCnpj($numero);
 
-}
+	
 
 echo $return;
 

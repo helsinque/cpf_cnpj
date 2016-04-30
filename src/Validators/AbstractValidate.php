@@ -8,7 +8,7 @@ use Exceptions\DocumentValidationException;
 *  classe com algoritimos de validações diversas
 */
 
-class FunctionsValidate
+class AbstractValidate
 {
 
     /**

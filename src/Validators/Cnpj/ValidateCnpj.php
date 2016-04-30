@@ -2,12 +2,14 @@
 
 namespace Validators\Cnpj;
 
+use Validators\AbstractValidate;
+use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 use Exceptions\DocumentValidationException;
-use Validators\FunctionsValidate;
+
 /**
 *  Válida um documento do tipo Cnpj
 */
-class ValidateCnpj extends FunctionsValidate
+class ValidateCnpj extends AbstractValidate
 {
 
 	private $number ="";
@@ -22,8 +24,8 @@ class ValidateCnpj extends FunctionsValidate
         try {
 
             $this->assertCNPJ($this->number);
-        } catch (Exception $e) {
-            return false;
+        } catch (InvalidArgumentException $e) {
+            throw new DocumentValidationException("O CNPJ não é válido", 1);
         }
         return true;
     }
@@ -36,7 +38,7 @@ class ValidateCnpj extends FunctionsValidate
         self::assertSize($number, [14, 15], "CNPJ");
         $start = strlen($number) == 14 ? 12 : 13;
         if (self::calculateModule11(substr($number, 0, $start), 2, 9) != substr($number, $start, 2))
-            throw new DocumentValidationException("O CNPJ não é válido", 1);
+            throw new InvalidArgumentException;            
         return $number;
     }
     
