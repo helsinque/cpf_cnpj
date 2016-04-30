@@ -8,7 +8,7 @@ Validador PHP para CPF e CNPJ agnóstico de framework. É uma lib criada para um
 
 ## TL;DR 
 
-Vamos começar com um fácil exemplo simples em primeiro lugar:
+Vamos começar com um simples e fácil exemplo em primeiro lugar:
 
 ## Validações
 
@@ -19,17 +19,9 @@ use Validators\Validator as validate;
 
 $data = new validate;
 
-$numero = "xxx.xxx.xxx-xx";
+$numero = "27.732.114/0001-82454";
 
-try
-{
-	$return=  $data->validateCpf($numero);
-
-} catch (Exception $e) {
-
-
-	$return= $e->getMessage();
-}
+$return=  $data->validateCnpj($numero);
 
 echo $return;
 
