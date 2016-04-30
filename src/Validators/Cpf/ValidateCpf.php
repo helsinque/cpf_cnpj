@@ -24,7 +24,7 @@ class ValidateCpf extends AbstractValidate
         try {
             $this->assertCPF($this->number);
         } catch (InvalidArgumentException $e) {
-            throw new DocumentValidationException("O CPF não é válido",1);
+            throw new DocumentValidationException($e->getMessage(), 1);
         }
         return true;
     }
@@ -36,7 +36,7 @@ class ValidateCpf extends AbstractValidate
         $number = preg_replace("/[^\d]/", "", $number);
         self::assertSize($number, 11, "CPF");
         if (self::calculateModule11(substr($number, 0, 9), 2, 12) != substr($number, 9, 2)){
-            throw new InvalidArgumentException;
+            throw new InvalidArgumentException("O CPF não é válido",1);
         }    
             
         return $number;

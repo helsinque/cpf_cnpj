@@ -25,7 +25,7 @@ class ValidateCnpj extends AbstractValidate
 
             $this->assertCNPJ($this->number);
         } catch (InvalidArgumentException $e) {
-            throw new DocumentValidationException("O CNPJ não é válido", 1);
+            throw new DocumentValidationException($e->getMessage(), 1);
         }
         return true;
     }
@@ -38,7 +38,7 @@ class ValidateCnpj extends AbstractValidate
         self::assertSize($number, [14, 15], "CNPJ");
         $start = strlen($number) == 14 ? 12 : 13;
         if (self::calculateModule11(substr($number, 0, $start), 2, 9) != substr($number, $start, 2))
-            throw new InvalidArgumentException;            
+            throw new InvalidArgumentException("O CNPJ não é válido", 1);            
         return $number;
     }
     

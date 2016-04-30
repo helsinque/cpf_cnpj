@@ -3,6 +3,7 @@
 namespace Validators;
 
 use Exceptions\DocumentValidationException;
+use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 
 /**
 *  classe com algoritimos de validações diversas
@@ -17,7 +18,7 @@ class AbstractValidate
     protected function assertSize($value, $size, $documento)
     {
         if (!in_array(strlen($value), (array) $size))
-            throw new DocumentValidationException("$documento não possue o tamanho adequado", 2);
+            throw new InvalidArgumentException("$documento não possue o tamanho adequado", 2);
     }
 
     /**

@@ -29,7 +29,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 	{
 		$validator = new  ValidateCpf();
 
-		$validator->assertCPF("355.444.555-05");
+		$validator->assertCPF("355.444.555-0587998");
 	}
 	
 }
