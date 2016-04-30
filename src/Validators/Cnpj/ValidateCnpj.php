@@ -25,7 +25,7 @@ class ValidateCnpj extends AbstractValidate
 
             $this->assertCNPJ($this->number);
         } catch (InvalidArgumentException $e) {
-            throw new DocumentValidationException($e->getMessage(), 1);
+            throw new DocumentValidationException($e->getMessage());
         }
         return true;
     }

@@ -10,8 +10,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 	public function testValidatorCPF()
 	{
 		$validator = new  ValidateCpf();
-		$this->assertInstanceOf(ValidateCpf::class, $validator);
 
+		$this->assertInstanceOf(ValidateCpf::class, $validator);
 
 	}
 
@@ -21,6 +21,13 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals(true, $validator->validateCPF("360.875.160-26"));
 	}
+
+	public function testValidCpfWithoutSeparate()
+    {
+        $validator = new ValidateCpf();
+
+        $this->assertTrue($validator->validateCPF("36087516026"));
+    }
 
 	/**
 	 * @expectedException InvalidArgumentException

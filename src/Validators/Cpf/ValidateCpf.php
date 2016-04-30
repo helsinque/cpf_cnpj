@@ -24,7 +24,7 @@ class ValidateCpf extends AbstractValidate
         try {
             $this->assertCPF($this->number);
         } catch (InvalidArgumentException $e) {
-            throw new DocumentValidationException($e->getMessage(), 1);
+            throw new DocumentValidationException($e->getMessage());
         }
         return true;
     }
