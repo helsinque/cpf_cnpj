@@ -4,6 +4,7 @@ namespace Validators\Cpf;
 
 use Exceptions\DocumentValidationException;
 use Validators\FunctionsValidate;
+use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 
 /**
 *  Válida um documento do tipo Cpf
@@ -35,7 +36,8 @@ class ValidateCpf extends FunctionsValidate
         $number = preg_replace("/[^\d]/", "", $number);
         self::assertSize($number, 11, "CPF");
         if (self::calculateModule11(substr($number, 0, 9), 2, 12) != substr($number, 9, 2))
-            throw new DocumentValidationException("O CPF não é válido");
+            //throw new DocumentValidationException("O CPF não é válido");
+            throw new InvalidArgumentException;
         return $number;
     }
 }

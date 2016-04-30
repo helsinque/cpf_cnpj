@@ -12,10 +12,17 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.5.9",
+<<<<<<< HEAD
         "bipbop/api": "1.*"
+=======
+        "bipbop/api": "*",
+        "phpunit/phpunit": "^5.2",
+        "phpunit/php-code-coverage": "^3"
+>>>>>>> Start tests
     },
     "autoload": {
         "psr-4": {
+            "Helsinque\\": "src/",
             "Validators\\": "src/Validators",
             "Exceptions\\": "src/Exceptions"
         }
