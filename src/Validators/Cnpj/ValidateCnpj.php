@@ -2,14 +2,14 @@
 
 namespace Validators\Cnpj;
 
-use Validators\AbstractValidate;
+use Validators\Validator;
 use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 use Exceptions\DocumentValidationException;
 
 /**
 *  Válida um documento do tipo Cnpj
 */
-class ValidateCnpj extends AbstractValidate
+class ValidateCnpj extends Validator
 {
 
 	private $number ="";
@@ -32,7 +32,7 @@ class ValidateCnpj extends AbstractValidate
     /**
     *  Válida tamanho do número informado e cálculo verificador
     */
-    private function assertCNPJ($number)
+    protected function assertCNPJ($number)
     {
         $number = preg_replace("/[^\d]/", "", $number);
         self::assertSize($number, [14, 15], "CNPJ");

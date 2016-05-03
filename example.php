@@ -6,9 +6,9 @@ use Validators\Validator as validate;
 
 $data = new validate;
 
-$numero = "024.913.300-83";
+$numero = "03.406.490/0001-19";
 
-$return=  $data->validateCpf($numero);
+$return=  $data->validateCnpj($numero);
 
 echo $return;
 

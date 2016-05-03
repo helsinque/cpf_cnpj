@@ -9,7 +9,7 @@ use Exceptions\DocumentValidationException;
 *  Classe para implementação de validadores
 */
 
-class Validator 
+class Validator extends AbstractValidate
 {
 
 	private $data;
