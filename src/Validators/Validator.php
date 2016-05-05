@@ -20,11 +20,12 @@ class Validator extends AbstractValidate
     public function initialize($number)
     {
         $this->data = $number;
-    } 
+    }
+
     /**
     *  Válida um documento do tipo CNPJ
     */
-    public function validateCnpj($parameter)
+    public function validateCNPJ($parameter)
     {
 
         if (!empty($parameter))
@@ -34,7 +35,7 @@ class Validator extends AbstractValidate
             try {
                 
                 $cnpj = new ValidateCnpj();
-                return $cnpj->validateCNPJ($this->data);
+                return $cnpj->validateCnpj($this->data);
 
             } catch (DocumentValidationException $e) {
                 return $e->getMessage();
@@ -45,10 +46,11 @@ class Validator extends AbstractValidate
         return "Informe um número para validação";
         
     }
+
     /**
     *  Válida um documento do tipo CPF
     */
-    public function validateCpf($parameter)
+    public function validateCPF($parameter)
     {
 
         if (!empty($parameter))
@@ -58,7 +60,7 @@ class Validator extends AbstractValidate
             try {
 
                 $cpf = new ValidateCpf();
-                return$cpf->validateCPF($this->data);
+                return$cpf->validateCpf($this->data);
                 
             } catch (DocumentValidationException $e) {
                 return $e->getMessage();

@@ -16,7 +16,7 @@ class ValidateCpf extends AbstractValidate
     /**
     *  responsável por iniciar validação
     */
-    public function validateCPF($number)
+    public function validateCpf($number)
     {
 
         $this->number = $number;
@@ -31,12 +31,12 @@ class ValidateCpf extends AbstractValidate
     /**
     *  Válida tamanho do número informado e cálculo verificador
     */
-    public function assertCPF($number)
+    protected function assertCPF($number)
     {
         $number = preg_replace("/[^\d]/", "", $number);
         self::assertSize($number, 11, "CPF");
         if (self::calculateModule11(substr($number, 0, 9), 2, 12) != substr($number, 9, 2)){
-            throw new InvalidArgumentException("O CPF não é válido",1);
+            throw new InvalidArgumentException("O CPF informado não é válido",1);
         }    
             
         return $number;

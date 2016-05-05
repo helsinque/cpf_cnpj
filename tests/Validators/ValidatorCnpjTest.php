@@ -3,10 +3,10 @@
 namespace Helsinque\Tests\Validators;
 
 use Validators\Cnpj\ValidateCnpj;
-use Validators\Validator;
+use Exceptions\DocumentValidationException;
 
 
-class ValidatorCnpjTest extends \PHPUnit_Framework_TestCase
+class ValidatorCpfTest extends \PHPUnit_Framework_TestCase
 {
 	public function testValidatorCNPJ()
 	{
@@ -20,26 +20,37 @@ class ValidatorCnpjTest extends \PHPUnit_Framework_TestCase
 	{
 		$validator = new  ValidateCnpj();
 
-		$this->assertEquals(true, $validator->validateCNPJ("03.406.490/0001-19"));
+		$this->assertEquals(true, $validator->validateCnpj("03.406.490/0001-19"));
 	}
 
-	public function testValidCnpjWithoutSeparate()
+	public function testValidateCnpjWithoutSeparate()
     {
         $validator = new ValidateCnpj();
 
-        $this->assertTrue($validator->validateCNPJ("03406490000119"));
+        $this->assertTrue($validator->validateCnpj("03406490000119"));
     }
+
+    /**
+	 * @expectedException Exceptions\DocumentValidationException
+	 */
+    public function testValidateCnpjInvalid()
+    {
+        $validator = new ValidateCnpj();
+
+        $validator->validateCnpj("45.364.280/1001-55");
+    }	
 
 	/**
 	 * @expectedException InvalidArgumentException
 	 */
-	// public function testEqualsCNPJNotRegexMatch()
-	// {
-	// 	$validator = new  ValidateCnpj();
+	public function testValidateCnpjNonStandardSize()
+	{
 
-	// 	$validator->assertCNPJ("355.444.555-0587998354645645364645");
-	// }
+		$instance = new ValidateCnpj();
+        
+		$this->invokeMethod($instance, 'assertCNPJ', array('45.364.280/0001-55456456'));
 
+	}
 
 	/**
 	 * Call protected/private method of a class.
@@ -60,28 +71,5 @@ class ValidatorCnpjTest extends \PHPUnit_Framework_TestCase
 
 	    return $method->invokeArgs($object, $parameters);
 	}
-
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
-	public function testFunctionName()
-	{
-		$instance = new ValidateCnpj();		
-
-		  try {
-        
-		        $this->invokeMethod($instance, 'ValidateCnpj', array('355.444.555-0587998354645645364645'));
-
-		    } catch (DocumentValidationException $e) {
-
-		        $this->assertType('DocumentValidationException', $e);
-		        $this->assertType('MainException', $e);
-		    }
-
-		//$instance->assertCNPJ('assertCNPJ');
-	}
-
-	
-
 	
 }

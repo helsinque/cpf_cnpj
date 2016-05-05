@@ -17,7 +17,7 @@ class ValidateCnpj extends Validator
     /**
     *  responsável por iniciar validação
     */
-	public function validateCNPJ($number)
+	public function validateCnpj($number)
 	{
 		$this->number = $number;
 

@@ -8,7 +8,6 @@ $data = new validate;
 
 $numero = "03.406.490/0001-19";
 
-$return=  $data->validateCnpj($numero);
+$return=  $data->validateCNPJ($numero);
 
 echo $return;
-

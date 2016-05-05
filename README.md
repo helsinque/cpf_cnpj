@@ -21,7 +21,7 @@ $data = new validate;
 
 $numero = "27.732.114/0001-82454";
 
-$return=  $data->validateCnpj($numero);
+$return=  $data->validateCNPJ($numero);
 
 echo $return;
 
