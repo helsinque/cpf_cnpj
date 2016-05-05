@@ -12,14 +12,14 @@ use Exceptions\DocumentValidationException;
 class ValidateCnpj extends Validator
 {
 
-	private $number ="";
+    private $number ="";
 
     /**
     *  responsável por iniciar validação
     */
-	public function validateCnpj($number)
-	{
-		$this->number = $number;
+    public function validateCnpj($number)
+    {
+        $this->number = $number;
 
         try {
 

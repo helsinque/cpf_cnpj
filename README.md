@@ -8,7 +8,7 @@ Validador PHP para CPF e CNPJ agnóstico de framework. É uma lib criada para um
 
 ## TL;DR 
 
-Vamos começar com um simples e fácil exemplo em primeiro lugar:
+Um simples exemplo em primeiro de validação de CNPJ:
 
 ## Validações
 
