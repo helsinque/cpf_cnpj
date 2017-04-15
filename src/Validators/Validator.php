@@ -1,15 +1,15 @@
 <?php
-
 namespace Validators;
 
 use Validators\Cpf\ValidateCpf;
 use Validators\Cnpj\ValidateCnpj;
 use Exceptions\DocumentValidationException;
+
 /**
 *  Classe para implementação de validadores
 */
 
-class Validator extends AbstractValidate
+class Validator 
 {
 
 	private $data;
@@ -32,10 +32,9 @@ class Validator extends AbstractValidate
         {            
             $this->initialize($parameter);
 
-            try {
-                
-                $cnpj = new ValidateCnpj();
-                return $cnpj->validateCnpj($this->data);
+            try {                
+                ( new ValidateCnpj() )->validateCnpj($this->data);
+                return true;
 
             } catch (DocumentValidationException $e) {
                 return $e->getMessage();
@@ -56,13 +55,51 @@ class Validator extends AbstractValidate
         if (!empty($parameter))
         {
             $this->initialize($parameter);
+            $response = null;
+
+            try {
+                ( new ValidateCpf )->validateCpf($this->data)->getValidation();
+                return true;                
+                
+            } catch (DocumentValidationException $e) {
+                return $e->getMessage();
+            }
+
+        }
+
+        return "Informe um número para validação";
+    }
+
+    /**
+    *  Válida um documento direto na API da BIPBOP
+    * @return (string) nome referênte ao documento
+    */
+    
+    public function validateWithBIPBOP($parameter)
+    {
+
+        if (!empty($parameter))
+        {
+            $this->initialize($parameter);
 
             try {
 
-                $cpf = new ValidateCpf();
-                return$cpf->validateCpf($this->data);
+                return ( new ValidateCpf )->validateCpf($this->data)->getName();
                 
             } catch (DocumentValidationException $e) {
+
+                if (preg_match('/^CPF/', $e->getMessage())) {
+
+                    try {
+                
+                        return ( new ValidateCnpj() )->validateCnpj($this->data)->getName();
+
+                    } catch (DocumentValidationException $e) {
+                        
+                        return $e->getMessage();
+                    }
+                }
+
                 return $e->getMessage();
             }
 

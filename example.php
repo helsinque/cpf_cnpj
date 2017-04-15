@@ -4,10 +4,11 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Validators\Validator as validate;
 
-$data = new validate;
+$document = "355.267.688-05";
 
-$numero = "03.406.490/0001-19";
+// $return1=  (new validate)->validateCNPJ($document);
+ $return2=  (new validate)->validateCPF($document);
 
-$return=  $data->validateCNPJ($numero);
+// $return =  (new validate)->validateWithBIPBOP($document);
 
-echo $return;
+echo "\n  $return2 \n";

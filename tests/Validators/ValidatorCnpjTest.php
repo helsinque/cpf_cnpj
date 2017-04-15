@@ -6,7 +6,7 @@ use Validators\Cnpj\ValidateCnpj;
 use Exceptions\DocumentValidationException;
 
 
-class ValidatorCpfTest extends \PHPUnit_Framework_TestCase
+class ValidatorCnpjTest extends \PHPUnit_Framework_TestCase
 {
     public function testValidatorCNPJ()
     {
@@ -20,14 +20,14 @@ class ValidatorCpfTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new  ValidateCnpj();
 
-        $this->assertEquals(true, $validator->validateCnpj("03.406.490/0001-19"));
+        $this->assertEquals("03.406.490/0001-19", $validator->validateCnpj("03.406.490/0001-19")->getValidation());
     }
 
     public function testValidateCnpjWithoutSeparate()
     {
         $validator = new ValidateCnpj();
 
-        $this->assertTrue($validator->validateCnpj("03406490000119"));
+        $this->assertEquals("03406490000119", $validator->validateCnpj("03406490000119")->getValidation());
     }
 
     /**
@@ -37,7 +37,7 @@ class ValidatorCpfTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new ValidateCnpj();
 
-        $validator->validateCnpj("45.364.280/1001-55");
+        $validator->validateCnpj("45.364.280/1001-55")->getValidation();
     }   
 
     /**

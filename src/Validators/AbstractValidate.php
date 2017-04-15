@@ -4,12 +4,14 @@ namespace Validators;
 
 use Exceptions\DocumentValidationException;
 use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
+use BIPBOP\Client\WebService;
+use BIPBOP\Client\Exception;
 
 /**
 *  classe com algoritimos de validações diversas
 */
 
-class AbstractValidate
+abstract class AbstractValidate
 {
 
     /**
@@ -40,5 +42,26 @@ class AbstractValidate
         }
 
         return substr($dado, strlen($dado) - $numDig);
-    }   
+    } 
+
+    /**
+    * Acessando API da BIPBOP
+    * @return XML
+    */
+    protected function bipbopValidators($document = null)
+    {
+        $webService = new WebService(/* Coloque sua chave de API aqui */);
+        
+        // SELECT FROM 'BIPBOPJS'.'CPFCNPJ'
+        try {
+
+            $query = sprintf("SELECT FROM 'BIPBOPJS'.'CPFCNPJ' WHERE 'DOCUMENTO' ='%s'", $document);
+            $dom =$webService->post($query); 
+        
+        } catch (Exception $e) {
+            throw new DocumentValidationException($e->getBIPBOPMessage());
+        }        
+
+        return $dom;
+    }  
 }

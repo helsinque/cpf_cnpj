@@ -6,7 +6,7 @@ use Validators\Cpf\ValidateCpf;
 use Exceptions\DocumentValidationException;
 
 
-class ValidatorCnpjTest extends \PHPUnit_Framework_TestCase
+class ValidatorCpfTest extends \PHPUnit_Framework_TestCase
 {
 	public function testValidatorCNPJ()
 	{
@@ -20,14 +20,14 @@ class ValidatorCnpjTest extends \PHPUnit_Framework_TestCase
 	{
 		$validator = new  ValidateCpf();
 
-		$this->assertEquals(true, $validator->validateCpf("154.155.160-50"));
+		$this->assertEquals("154.155.160-50", $validator->ValidateCpf("154.155.160-50")->getValidation());
 	}
 
 	public function testValidateCpfWithoutSeparate()
     {
         $validator = new Validatecpf();
 
-        $this->assertTrue($validator->validateCpf("15415516050"));
+        $this->assertEquals("15415516050",$validator->validateCpf("15415516050")->getValidation());
     }
 
     /**
@@ -37,7 +37,7 @@ class ValidatorCnpjTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new ValidateCpf();
 
-        $validator->validateCpf("154.155.369-50");
+        $validator->validateCpf("154.155.369-50")->getValidation();
     }	
 
 	/**

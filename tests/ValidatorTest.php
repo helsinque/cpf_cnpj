@@ -5,7 +5,6 @@ namespace Helsinque\Tests;
 use Validators\Validator;
 use Exceptions\DocumentValidationException;
 
-
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
 

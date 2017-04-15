@@ -2,44 +2,64 @@
 
 namespace Validators\Cnpj;
 
-use Validators\Validator;
-use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
+use Validators\AbstractValidate;
 use Exceptions\DocumentValidationException;
+use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 
 /**
-*  Válida um documento do tipo Cnpj
+*  Válida um documento do tipo CNPJ
 */
-class ValidateCnpj extends Validator
+class ValidateCnpj extends AbstractValidate
 {
 
-    private $number ="";
+    private $response;
+    private $document;
+
+    function __construct($document = null)
+    {
+        $this->document = $document;
+    }
 
     /**
     *  responsável por iniciar validação
     */
-    public function validateCnpj($number)
+    public function validateCnpj($document)
     {
-        $this->number = $number;
+        $this->document = $document;
 
         try {
-
-            $this->assertCNPJ($this->number);
+            $this->assertCNPJ($this->document);
         } catch (InvalidArgumentException $e) {
             throw new DocumentValidationException($e->getMessage());
         }
-        return true;
+        
+        $this->response = $document;
+        return $this;
+    }
+
+    public function getValidation()
+    {
+        return $this->response;
+    }
+
+    public function getName()
+    {
+        $this->response = self::bipbopValidators($this->response);        
+        $xpath = (new \DOMXPath($this->response))->query('//nome');
+
+        return $xpath->item(0)->nodeValue;
     }
     /**
     *  Válida tamanho do número informado e cálculo verificador
     */
-    protected function assertCNPJ($number)
+    protected function assertCNPJ($response)
     {
-        $number = preg_replace("/[^\d]/", "", $number);
-        self::assertSize($number, [14, 15], "CNPJ");
-        $start = strlen($number) == 14 ? 12 : 13;
-        if (self::calculateModule11(substr($number, 0, $start), 2, 9) != substr($number, $start, 2))
+        $response = preg_replace("/[^\d]/", "", $response);
+        self::assertSize($response, [14, 15], "CNPJ");
+        $start = strlen($response) == 14 ? 12 : 13;
+        if (self::calculateModule11(substr($response, 0, $start), 2, 9) != substr($response, $start, 2))
             throw new InvalidArgumentException("O CNPJ não é válido", 1);            
-        return $number;
+        return $response;
     }
     
 }

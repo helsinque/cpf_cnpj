@@ -3,42 +3,68 @@
 namespace Validators\Cpf;
 
 use Validators\AbstractValidate;
-use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 use Exceptions\DocumentValidationException;
+use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 
 /**
-*  Válida um documento do tipo Cpf
+*  Válida um documento do tipo CPF
 */
 class ValidateCpf extends AbstractValidate
 {
-    private $number ="";
+
+    public $response;
+    public $document;
+
+    function __construct($document = null)
+    {
+        $this->document = $document;
+    }
 
     /**
     *  responsável por iniciar validação
     */
-    public function validateCpf($number)
+    public function validateCpf($document)
     {
 
-        $this->number = $number;
+        $this->document = $document;
 
         try {
-            $this->assertCPF($this->number);
+            $this->assertCPF($this->document);
         } catch (InvalidArgumentException $e) {
             throw new DocumentValidationException($e->getMessage());
         }
-        return true;
+
+        $this->response = $document;
+        return $this;
+    }
+
+    public function getValidation()
+    {
+        return $this->response;
+    }
+
+    public function getName()
+    {
+        $this->response = self::bipbopValidators($this->response);                
+        $xpath = (new \DOMXPath($this->response));
+
+        if (!$xpath->query('//nome')->length) {
+            return $xpath = (new \DOMXPath($this->response))->query('//exception');
+        }
+
+        return $xpath->query('//nome')->item(0)->nodeValue;
     }
     /**
     *  Válida tamanho do número informado e cálculo verificador
     */
-    protected function assertCPF($number)
+    protected function assertCPF($document)
     {
-        $number = preg_replace("/[^\d]/", "", $number);
-        self::assertSize($number, 11, "CPF");
-        if (self::calculateModule11(substr($number, 0, 9), 2, 12) != substr($number, 9, 2)){
+        $document = preg_replace("/[^\d]/", "", $document);
+        self::assertSize($document, 11, "CPF");
+        if (self::calculateModule11(substr($document, 0, 9), 2, 12) != substr($document, 9, 2)){
             throw new InvalidArgumentException("O CPF informado não é válido",1);
         }    
             
-        return $number;
+        return $document;
     }
 }
