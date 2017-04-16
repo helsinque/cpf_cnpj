@@ -10,13 +10,20 @@ use Exceptions\DocumentValidationException;
 use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 
 /**
-*  Válida um documento do tipo CPF
-*/
+ * Class Abstract Validate.
+ *
+ * @author Helsinque Cordeiro <helsinquedeveloper@gmail.com">
+ */
 class ValidateBipbop extends AbstractValidate implements ValidatorsInterface
 {
     public $response;
     public $document;
 
+    /**
+     * Constructor method.
+     *
+     * @param string $document
+     */
     public function __construct($document = null)
     {
         $this->document = $document;
@@ -26,6 +33,9 @@ class ValidateBipbop extends AbstractValidate implements ValidatorsInterface
 
     /**
     *  responsável por validar
+    *
+    * @param  string $document
+    * @return string nome referênte ao documento
     */
     public function validate($value)
     {
@@ -41,7 +51,8 @@ class ValidateBipbop extends AbstractValidate implements ValidatorsInterface
     /**
     *  Válida um documento direto na API da BIPBOP
     *
-    * @return (string) nome referênte ao documento
+    * @param  string $document
+    * @return string nome referênte ao documento
     */
     public function validateWithBIPBOP($parameter)
     {
