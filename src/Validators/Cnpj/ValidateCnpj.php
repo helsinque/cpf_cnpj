@@ -21,6 +21,20 @@ class ValidateCnpj extends AbstractValidate
     }
 
     /**
+    *  responsável por validar
+    */
+    public function validate($value)
+    {
+        try {
+            $result = $this->assertCNPJ($value);
+        } catch (InvalidArgumentException $e) {
+            throw new DocumentValidationException($e->getMessage());
+        }
+        
+       return $result;
+    }
+
+    /**
     *  responsável por iniciar validação
     */
     public function validateCnpj($document)

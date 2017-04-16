@@ -21,6 +21,20 @@ class ValidateCpf extends AbstractValidate
     }
 
     /**
+    *  responsável por validar
+    */
+    public function validate($value)
+    {
+        try {
+            $result = $this->assertCpf($value);
+        } catch (InvalidArgumentException $e) {
+            throw new DocumentValidationException($e->getMessage());
+        }
+        
+       return $result;
+    }
+
+    /**
     *  responsável por iniciar validação
     */
     public function validateCpf($document)
