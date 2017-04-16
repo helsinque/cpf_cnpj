@@ -38,13 +38,17 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($validator->validate("Cpf", "111"));
     }
 
-    public function testValidateCpfShouldReturnErrorString()
+    /**
+     * @expectedException Exceptions\DocumentValidationException
+     * @expectedExceptionMessage Erro ao validar campos
+     */
+    public function testValidateCpfShouldThrowException()
     {
         $validateCpfMock = $this->getMockBuilder('\Validators\Cpf\ValidateCpf')
                      ->getMock();
 
         $validateCpfMock->method('validate')
-             ->willReturn("Qualquer mensagem de erro");
+             ->willThrowException(new \Exception("Erro ao validar campos"));
 
         $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
             ->getMock();
@@ -54,52 +58,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
         $validator = new Validator($typeFactoryMock);
 
-        $this->assertEquals("Qualquer mensagem de erro", $validator->validate("Cpf","111"));
-    }
-
-    public function testValidateCnpjShouldReturnTrue()
-    {
-        $validateCnpjMock = $this->getMockBuilder('\Validators\Cnpj\ValidateCnpj')
-                     ->getMock();
-
-        $validateCnpjMock->method('validate')
-             ->willReturn(true);
-
-        $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
-            ->getMock();
-
-        $typeFactoryMock->method('make')
-             ->willReturn($validateCnpjMock);
-
-        $validator = new Validator($typeFactoryMock);
-
-        $this->assertTrue($validator->validate("Cnpj", "111"));
-    }
-
-
-    public function testValidateCnpjShouldReturnErrorString()
-    {
-        $validateCnpjMock = $this->getMockBuilder('\Validators\Cnpj\ValidateCnpj')
-                     ->getMock();
-
-        $validateCnpjMock->method('validate')
-             ->willReturn('Qualquer error que possa retornar');
-
-        $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
-            ->getMock();
-
-        $typeFactoryMock->method('make')
-             ->willReturn($validateCnpjMock);
-
-        $validator = new Validator($typeFactoryMock);
-
-        $this->assertEquals("Qualquer error que possa retornar", $validator->validate("Cnpj", "111"));
-    }
-
-    public function testValidateWhithoutParamsShouldReturnError()
-    {
-        $validator = new Validator(new \Helsinque\Factories\TypeFactory);
-        $this->assertEquals("Informe o parametro", $validator->validate("",""));
-    }
-    
+        $validator->validate("Cpf", "");
+    } 
 }

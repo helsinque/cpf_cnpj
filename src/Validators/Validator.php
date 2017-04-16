@@ -38,14 +38,12 @@ class Validator
      */
     public function validate($type, $value)
     {
-        if (empty($value)) {
-            return "Informe o parametro";
-        }
+        $validator = $this->typeFactory->make($type);
 
         try {
-            $result = $this->typeFactory->make($type)->validate($value);
-        } catch (DocumentValidationException $e) {
-            return $e->getMessage();
+            $result = $validator->validate($value);
+        } catch (\Exception $e) {
+            throw new DocumentValidationException($e->getMessage(), 412, $e);
         }
 
         return $result;

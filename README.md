@@ -18,24 +18,38 @@ Um simples exemplo de validação de CNPJ e uma com a Bipbop apresetando o retor
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Helsinque\Validator as Validate;
+$validate = new Helsinque\Validator();
+
+try {
+    $result = $validate->validate("Cnpj", "42.183.878/0001-50");
+} catch (\Exception $e) {
+    echo $e->getMessage();
+}
+
+echo $result; //true
+
+```
+
+## For BipBop info
+
+```php
+
+require __DIR__ . '/vendor/autoload.php';
+
+$validate = new Helsinque\Validator();
 
 $config = [
-	'API_BIPBOP_KEY' => null
+    'API_BIPBOP_KEY' => YOUR_KEY_HERE
 ];
 
-$document = "42.183.878/0001-50";
-
-$validate = new Validate();
-$return=  $validate->validate("Cnpj", $document);
-
-OR
-
 $validate = new Validate($config);
-$return = $validate->validate("Bipbop", $document);
 
+try {
+    $result = $validate->validate("BipBop", "42.183.878/0001-50");
+} catch (\Exception $e) {
+    echo $e->getMessage();
+}
 
-
-echo "\n  $return \n";
+echo $result; //informações sobre o cnpj
 
 ```

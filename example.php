@@ -8,6 +8,10 @@ $document = "42.183.878/0001-50";
 
 $validate = new Validate();
 
-$return=  $validate->validate("Cnpj", $document);
+try {
+    $return = $validate->validate("Cnpj", $document);
+} catch (\Exception $e) {
+    echo $e->getMessage();die;
+}
 
 echo "\n  $return \n";
