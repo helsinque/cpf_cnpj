@@ -4,20 +4,12 @@ namespace Helsinque\Tests;
 
 use Validators\Validator;
 use Exceptions\DocumentValidationException;
+use Helsinque\Factories\TypeFactory;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $validator;
-
-    function setUp()
-    {
-        parent::setUp();
-        $this->validator = new Validator(
-            new \Validators\Cpf\ValidateCpf,
-            new \Validators\Cnpj\ValidateCnpj 
-        );
-    }
 
     public function assertPreConditions()
     {
@@ -25,23 +17,25 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                 class_exists($class = 'Validators\Validator'),
                 'Class not found: '.$class
         );
-        $this->assertInstanceOf('\Validators\Validator', $this->validator);
     }
 
     public function testValidateCpfShouldReturnTrue()
     {
         $validateCpfMock = $this->getMockBuilder('\Validators\Cpf\ValidatorCpf')
-                     ->getMock();
+            ->getMock();
 
         $validateCpfMock->method('validateCPF')
              ->willReturn(true);
 
-        $validator = new Validator(
-            $validateCpfMock,
-            new \Validators\Cnpj\ValidateCnpj 
-        );
+        $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
+            ->getMock();
 
-        $this->assertTrue($validator->validateCPF("111"));
+        $typeFactoryMock->method('make')
+             ->willReturn($validateCpfMock);
+
+        $validator = new Validator($typeFactoryMock);
+
+        $this->assertTrue($validator->validate("Cpf", "111"));
     }
 
     public function testValidateCpfShouldReturnErrorString()
@@ -52,12 +46,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validateCpfMock->method('validateCPF')
              ->willReturn("Qualquer mensagem de erro");
 
-        $validator = new Validator(
-            $validateCpfMock,
-            new \Validators\Cnpj\ValidateCnpj 
-        );
+        $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
+            ->getMock();
 
-        $this->assertEquals("Qualquer mensagem de erro", $validator->validateCPF("111"));
+        $typeFactoryMock->method('make')
+             ->willReturn($validateCpfMock);
+
+        $validator = new Validator($typeFactoryMock);
+
+        $this->assertEquals("Qualquer mensagem de erro", $validator->validate("Cpf","111"));
     }
 
     public function testValidateCnpjShouldReturnTrue()
@@ -68,12 +65,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validateCnpjMock->method('validateCnpj')
              ->willReturn(true);
 
-        $validator = new Validator(
-            new \Validators\Cpf\ValidateCpf,
-            $validateCnpjMock
-        );
+        $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
+            ->getMock();
 
-        $this->assertTrue($validator->validateCnpj("111"));
+        $typeFactoryMock->method('make')
+             ->willReturn($validateCnpjMock);
+
+        $validator = new Validator($typeFactoryMock);
+
+        $this->assertTrue($validator->validate("Cnpj", "111"));
     }
 
 
@@ -85,12 +85,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validateCnpjMock->method('validateCnpj')
              ->willReturn('Qualquer error que possa retornar');
 
-        $validator = new Validator(
-            new \Validators\Cpf\ValidateCpf,
-            $validateCnpjMock
-        );
+        $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
+            ->getMock();
 
-        $this->assertEquals("Qualquer error que possa retornar", $validator->validateCnpj("111"));
+        $typeFactoryMock->method('make')
+             ->willReturn($validateCnpjMock);
+
+        $validator = new Validator($typeFactoryMock);
+
+        $this->assertEquals("Qualquer error que possa retornar", $validator->validate("Cnpj", "111"));
     }
     
 }

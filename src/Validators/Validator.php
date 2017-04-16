@@ -4,60 +4,33 @@ namespace Validators;
 use Validators\Cpf\ValidateCpf;
 use Validators\Cnpj\ValidateCnpj;
 use Exceptions\DocumentValidationException;
-
+use Helsinque\Factories\TypeFactory;
 /**
 *  Classe para implementação de validadores
 */
 
 class Validator 
 {
-	private $data;
-    private $validateCpf;
-    private $validateCnpj;
+    private $typeFactory;
 
     /**
     * Método construtor serve pra se injetar as depenencias necessárias para esta classe, ou os recursos que ela irá consumir
     */
-    public function __construct
-    (
-        \Validators\Cpf\ValidateCpf $validateCpf,
-        \Validators\Cnpj\ValidateCnpj $validateCnpj   
-    ) {
-        $this->validateCpf = $validateCpf;
-        $this->validateCnpj = $validateCnpj;
+    public function __construct(TypeFactory $typeFactory) {
+        $this->typeFactory = $typeFactory;
     }
 
     /**
-    *  Válida um documento do tipo CNPJ
+    * Generic validator
     */
-    public function validateCNPJ(string $value)
+    public function validate($type, $value)
     {
-
         if (empty($value)) {
             return "Informe o parametro";
         }
-                   
+
         try {                
-            $result = $this->validateCnpj->validateCnpj($value);
-        } catch (DocumentValidationException $e) {
-            return $e->getMessage();
-        }
-            
-        return $result;
-    }
-
-    /**
-    *  Válida um documento do tipo CPF
-    */
-    public function validateCPF(string $value)
-    {
-
-        if (empty($value)) {
-            return "Informe o parametro";
-        }
-        
-        try {
-            $result = $this->validateCpf->validateCpf($value);                
+            $result = $this->typeFactory::make($type)->validate($value);
         } catch (DocumentValidationException $e) {
             return $e->getMessage();
         }
