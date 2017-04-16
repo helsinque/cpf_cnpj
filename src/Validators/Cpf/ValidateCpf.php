@@ -3,84 +3,65 @@
 namespace Validators\Cpf;
 
 use Validators\AbstractValidate;
-use Validators\ValidatorsInterface;
 use Exceptions\DocumentValidationException;
 use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
+use Validators\ValidatorsInterface;
 
 /**
-*  Válida um documento do tipo CPF
-*/
+ * Class ValidateCpf.
+ *
+ * @author Helsinque Cordeiro <helsinquedeveloper@gmail.com">
+ */
 class ValidateCpf extends AbstractValidate implements ValidatorsInterface
 {
-
-    public $response;
-    public $document;
-
-    public function __construct($document = null)
+    /**
+     * Filter input
+     *
+     * @param string $value
+     */
+    private function filterInput($value)
     {
-        $this->document = $document;
+        return preg_replace("/[^\d]/", "", $value);
     }
 
     /**
-    *  responsável por validar
-    */
+     * Check number size
+     *
+     * @param string $value
+     */
+    private function validateSize($value)
+    {
+        if (strlen($value) != 11) {
+            throw new InvalidArgumentException("$value documento não possue o tamanho adequado", 412);
+        }
+    }
+
+    /**
+     * Check if is a valid number.
+     *
+     * @param string $value
+     */
+    private function checkIfIsValid($value)
+    {
+        if ($this->calculateModule11(substr($value, 0, 9), 2, 12) != substr($value, 9, 2)) {
+            throw new InvalidArgumentException("$value documento não é válido", 412);
+        }
+    }
+
+    /**
+     * validate method.
+     *
+     * @param string $value
+     * @return bool true
+     */
     public function validate($value)
     {
-        try {
-            $result = $this->assertCpf($value);
-        } catch (InvalidArgumentException $e) {
-            throw new DocumentValidationException($e->getMessage());
-        }
-        
-        return $result;
-    }
+        $value = $this->filterInput($value);
 
-    /**
-    *  responsável por iniciar validação
-    */
-    public function validateCpf($document)
-    {
+        $this->validateSize($value);
 
-        $this->document = $document;
+        $this->checkIfIsValid($value);
 
-        try {
-            $this->assertCPF($this->document);
-        } catch (InvalidArgumentException $e) {
-            throw new DocumentValidationException($e->getMessage());
-        }
-
-        $this->response = $document;
-        return $this;
-    }
-
-    public function getValidation()
-    {
-        return $this->response;
-    }
-
-    public function getName()
-    {
-        $this->response = self::bipbopValidators($this->response);
-        $xpath = (new \DOMXPath($this->response));
-
-        if (!$xpath->query('//nome')->length) {
-            return $xpath = (new \DOMXPath($this->response))->query('//exception');
-        }
-
-        return $xpath->query('//nome')->item(0)->nodeValue;
-    }
-    
-    /**
-    *  Válida tamanho do número informado e cálculo verificador
-    */
-    protected function assertCPF($document)
-    {
-        $document = preg_replace("/[^\d]/", "", $document);
-        self::assertSize($document, 11, "CPF");
-        if (self::calculateModule11(substr($document, 0, 9), 2, 12) != substr($document, 9, 2)) {
-            throw new InvalidArgumentException("O CPF informado não é válido", 1);
-        }
-            
-        return $document;
+        return true;
     }
 }

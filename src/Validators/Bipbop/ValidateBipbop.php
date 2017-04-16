@@ -49,11 +49,11 @@ class ValidateBipbop extends AbstractValidate implements ValidatorsInterface
     }
 
     /**
-    *  Válida um documento direto na API da BIPBOP
-    *
-    * @param  string $document
-    * @return string nome referênte ao documento
-    */
+     *  Valida um documento direto na API da BIPBOP
+     *
+     * @param  string $document
+     * @return string nome referênte ao documento
+     */
     public function validateWithBIPBOP($parameter)
     {
         if (empty($parameter)) {
@@ -72,5 +72,24 @@ class ValidateBipbop extends AbstractValidate implements ValidatorsInterface
             }
             return $e->getMessage();
         }
+    }
+
+    /**
+     * BipBop API Call
+     *
+     * @param  string $document
+     * @return XML
+     */
+    protected function bipbopValidators($document = null)
+    {
+        $webService = new WebService(Config::get('API_BIPBOP_KEY'));
+        
+        try {
+            $query = sprintf("SELECT FROM 'BIPBOPJS'.'CPFCNPJ' WHERE 'DOCUMENTO' ='%s'", $document);
+            $dom = $webService->post($query);
+        } catch (Exception $e) {
+            throw new DocumentValidationException($e->getBIPBOPMessage());
+        }
+        return $dom;
     }
 }

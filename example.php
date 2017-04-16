@@ -14,4 +14,4 @@ try {
     echo $e->getMessage();die;
 }
 
-echo "\n  $return \n";
+echo 'Documento Ok';

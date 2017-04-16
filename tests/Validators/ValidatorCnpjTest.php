@@ -5,71 +5,50 @@ namespace Helsinque\Tests\Validators;
 use Validators\Cnpj\ValidateCnpj;
 use Exceptions\DocumentValidationException;
 
-
 class ValidatorCnpjTest extends \PHPUnit_Framework_TestCase
 {
-    public function testValidatorCNPJ()
+    protected $cnpjValidator;
+
+    public function assertPreConditions()
     {
-        $validator = new  ValidateCnpj();
+        $this->assertTrue(
+                class_exists($class = '\Validators\Cnpj\ValidateCnpj'),
+                'Class not found: '.$class
+        );
 
-        $this->assertInstanceOf(ValidateCnpj::class, $validator);
-
+        $this->cnpjValidator = new \Validators\Cnpj\ValidateCnpj();
     }
 
-    public function testEqualsCNPJ()
+    public function testValidateCnpjWithOkCnpjShouldReturnTrue()
     {
-        $validator = new  ValidateCnpj();
-
-        $this->assertEquals("03.406.490/0001-19", $validator->validateCnpj("03.406.490/0001-19")->getValidation());
-    }
-
-    public function testValidateCnpjWithoutSeparate()
-    {
-        $validator = new ValidateCnpj();
-
-        $this->assertEquals("03406490000119", $validator->validateCnpj("03406490000119")->getValidation());
+       $this->assertTrue($this->cnpjValidator->validate("42.183.878/0001-50"));
+       $this->assertTrue($this->cnpjValidator->validate("42183878000150"));
     }
 
     /**
-     * @expectedException Exceptions\DocumentValidationException
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage 1234567890123 documento não possue o tamanho adequado
      */
-    public function testValidateCnpjInvalid()
+    public function testValidateCnpjWith13SizeShouldThrowException()
     {
-        $validator = new ValidateCnpj();
-
-        $validator->validateCnpj("45.364.280/1001-55")->getValidation();
-    }   
-
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testValidateCnpjNonStandardSize()
-    {
-
-        $instance = new ValidateCnpj();
-        
-        $this->invokeMethod($instance, 'assertCNPJ', array('45.364.280/0001-55456456'));
-
+        $this->cnpjValidator->validate("1234567890123");
     }
 
     /**
-     * Call protected/private method of a class.
-     *
-     * @param object &$object    Instantiated object that we will run method on.
-     * @param string $methodName Method name to call
-     * @param array  $parameters Array of parameters to pass into method.
-     *
-     * @return mixed Method return.
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage 1234567890123456 documento não possue o tamanho adequado
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array())
-
+    public function testValidateCnpjWith16SizeShouldThrowException()
     {
-
-        $reflection = new \ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
-
-        return $method->invokeArgs($object, $parameters);
+        $this->cnpjValidator->validate("1234567890123456");
     }
-    
+
+     /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage 123456789012345 documento não é válido
+     */
+    public function testValidateCnpjWithInvalidNumberShouldThrowException()
+    {
+        $this->cnpjValidator->validate("123456789012345");
+    }  
 }

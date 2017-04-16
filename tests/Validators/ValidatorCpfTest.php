@@ -5,71 +5,50 @@ namespace Helsinque\Tests\Validators;
 use Validators\Cpf\ValidateCpf;
 use Exceptions\DocumentValidationException;
 
-
 class ValidatorCpfTest extends \PHPUnit_Framework_TestCase
 {
-	public function testValidatorCNPJ()
-	{
-		$validator = new  ValidateCpf();
+	protected $cpfValidator;
 
-		$this->assertInstanceOf(ValidateCpf::class, $validator);
-
-	}
-
-	public function testEqualsCPF()
-	{
-		$validator = new  ValidateCpf();
-
-		$this->assertEquals("154.155.160-50", $validator->ValidateCpf("154.155.160-50")->getValidation());
-	}
-
-	public function testValidateCpfWithoutSeparate()
+    public function assertPreConditions()
     {
-        $validator = new Validatecpf();
+        $this->assertTrue(
+                class_exists($class = '\Validators\Cpf\ValidateCpf'),
+                'Class not found: '.$class
+        );
 
-        $this->assertEquals("15415516050",$validator->validateCpf("15415516050")->getValidation());
+        $this->cpfValidator = new \Validators\Cpf\ValidateCpf();
+    }
+
+	 public function testValidateCpfWithOkCpfShouldReturnTrue()
+    {
+       $this->assertTrue($this->cpfValidator->validate("605.456.271-17"));
+       $this->assertTrue($this->cpfValidator->validate("60545627117"));
     }
 
     /**
-	 * @expectedException Exceptions\DocumentValidationException
-	 */
-    public function testValidateCnpjInvalid()
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage 1234567890 documento não possue o tamanho adequado
+     */
+    public function testValidateCpfWith10SizeShouldThrowException()
     {
-        $validator = new ValidateCpf();
+        $this->cpfValidator->validate("1234567890");
+    }
 
-        $validator->validateCpf("154.155.369-50")->getValidation();
-    }	
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage 123456789012 documento não possue o tamanho adequado
+     */
+    public function testValidateCpfWith12SizeShouldThrowException()
+    {
+        $this->cpfValidator->validate("123456789012");
+    }
 
-	/**
-	 * @expectedException InvalidArgumentException
-	 */
-	public function testValidateCnpjNonStandardSize()
-	{
-
-		$instance = new ValidateCpf();
-        
-		$this->invokeMethod($instance, 'assertCPF', array('154.155.160-5023343'));
-
-	}
-
-	/**
-	 * Call protected/private method of a class.
-	 *
-	 * @param object &$object    Instantiated object that we will run method on.
-	 * @param string $methodName Method name to call
-	 * @param array  $parameters Array of parameters to pass into method.
-	 *
-	 * @return mixed Method return.
-	 */
-	public function invokeMethod(&$object, $methodName, array $parameters = array())
-
-	{
-
-	    $reflection = new \ReflectionClass(get_class($object));
-	    $method = $reflection->getMethod($methodName);
-	    $method->setAccessible(true);
-
-	    return $method->invokeArgs($object, $parameters);
-	}
-	
+     /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage 60545627110 documento não é válido
+     */
+    public function testValidateCpfWithInvalidNumberShouldThrowException()
+    {
+        $this->cpfValidator->validate("605.456.271-10");
+    } 
 }

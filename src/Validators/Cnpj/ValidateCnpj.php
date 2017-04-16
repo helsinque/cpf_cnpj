@@ -2,78 +2,68 @@
 
 namespace Validators\Cnpj;
 
-use Validators\AbstractValidate;
 use Validators\ValidatorsInterface;
 use Exceptions\DocumentValidationException;
 use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
+use Validators\AbstractValidate;
 
 /**
-*  Válida um documento do tipo CNPJ
-*/
+ * Class ValidateCnpj.
+ *
+ * @author Helsinque Cordeiro <helsinquedeveloper@gmail.com">
+ */
 class ValidateCnpj extends AbstractValidate implements ValidatorsInterface
 {
 
-    public $response;
-    public $document;
-
-    public function __construct($document = null)
+    /**
+     * Filter input
+     *
+     * @param string $value
+     */
+    private function filterInput($value)
     {
-        $this->document = $document;
+        return preg_replace("/[^\d]/", "", $value);
     }
 
     /**
-    *  responsável por validar
-    */
+     * Check number size
+     *
+     * @param string $value
+     */
+    private function validateSize($value)
+    {
+        if (strlen($value) > 15 || strlen($value) < 14) {
+            throw new InvalidArgumentException("$value documento não possue o tamanho adequado", 412);
+        }
+    }
+
+    /**
+     * Check if is a valid number.
+     *
+     * @param string $value
+     */
+    private function checkIfIsValid($value)
+    {
+        $start = strlen($value) == 14 ? 12 : 13;
+        if ($this->calculateModule11(substr($value, 0, $start), 2, 9) != substr($value, $start, 2)) {
+            throw new InvalidArgumentException("$value documento não é válido", 412);
+        }
+    }
+
+    /**
+     * validate method.
+     *
+     * @param string $value
+     * @return bool true
+     */
     public function validate($value)
     {
-        try {
-            $result = $this->assertCNPJ($value);
-        } catch (InvalidArgumentException $e) {
-            throw new DocumentValidationException($e->getMessage());
-        }
-        
-        return $result;
-    }
+        $value = $this->filterInput($value);
 
-    /**
-    *  responsável por iniciar validação
-    */
-    public function validateCnpj($document)
-    {
-        $this->document = $document;
+        $this->validateSize($value);
 
-        try {
-            $this->assertCNPJ($this->document);
-        } catch (InvalidArgumentException $e) {
-            throw new DocumentValidationException($e->getMessage());
-        }
-        
-        $this->response = $document;
-        return $this;
-    }
+        $this->checkIfIsValid($value);
 
-    public function getValidation()
-    {
-        return $this->response;
-    }
-
-    public function getName()
-    {
-        $this->response = self::bipbopValidators($this->response);
-        $xpath = (new \DOMXPath($this->response))->query('//nome');
-        return $xpath->item(0)->nodeValue;
-    }
-    /**
-    *  Válida tamanho do número informado e cálculo verificador
-    */
-    protected function assertCNPJ($response)
-    {
-        $response = preg_replace("/[^\d]/", "", $response);
-        self::assertSize($response, [14, 15], "CNPJ");
-        $start = strlen($response) == 14 ? 12 : 13;
-        if (self::calculateModule11(substr($response, 0, $start), 2, 9) != substr($response, $start, 2)) {
-            throw new InvalidArgumentException("O CNPJ não é válido", 1);
-        }
-        return $response;
+        return true;
     }
 }
