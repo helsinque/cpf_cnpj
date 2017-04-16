@@ -6,6 +6,7 @@ use Exceptions\DocumentValidationException;
 use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 use BIPBOP\Client\WebService;
 use BIPBOP\Client\Exception;
+use Helsinque\Config;
 
 /**
 *  classe com algoritimos de validações diversas
@@ -50,7 +51,7 @@ abstract class AbstractValidate
     */
     protected function bipbopValidators($document = null)
     {
-        $webService = new WebService(/* Coloque sua chave de API aqui */);
+        $webService = new WebService(Config::get('API_BIPBOP_KEY'));
         
         // SELECT FROM 'BIPBOPJS'.'CPFCNPJ'
         try {

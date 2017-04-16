@@ -44,7 +44,7 @@ class Validator
     * @return (string) nome referênte ao documento
     */
     
-    public function validateWithBIPBOP($parameter)
+    public function validateWithBipBop($parameter)
     {
 
         if (empty($parameter)) {
