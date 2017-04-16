@@ -18,7 +18,7 @@ class ValidatorFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testInvokeMethod()
     {
-    	$class = new HValidator;
+    	$class = new HValidator([]);
     	$this->assertInstanceOf('\Validators\Validator', $class->getInstance());
     }
 }

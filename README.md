@@ -18,13 +18,23 @@ Um simples exemplo de validação de CNPJ e uma com a Bipbop apresetando o retor
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Validators\Validator as validate;
+use Helsinque\Validator as Validate;
+
+$config = [
+	'API_BIPBOP_KEY' => null
+];
 
 $document = "42.183.878/0001-50";
 
-// $return01=  (new validate)->validateCNPJ($document);
+$validate = new Validate();
+$return=  $validate->validate("Cnpj", $document);
 
-$return =  (new validate)->validateWithBIPBOP($document);
+OR
+
+$validate = new Validate($config);
+$return = $validate->validate("Bipbop", $document);
+
+
 
 echo "\n  $return \n";
 

@@ -21,10 +21,10 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidateCpfShouldReturnTrue()
     {
-        $validateCpfMock = $this->getMockBuilder('\Validators\Cpf\ValidatorCpf')
+        $validateCpfMock = $this->getMockBuilder('\Validators\Cpf\ValidateCpf')
             ->getMock();
 
-        $validateCpfMock->method('validateCPF')
+        $validateCpfMock->method('validate')
              ->willReturn(true);
 
         $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
@@ -40,10 +40,10 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidateCpfShouldReturnErrorString()
     {
-        $validateCpfMock = $this->getMockBuilder('\Validators\Cpf\ValidatorCpf')
+        $validateCpfMock = $this->getMockBuilder('\Validators\Cpf\ValidateCpf')
                      ->getMock();
 
-        $validateCpfMock->method('validateCPF')
+        $validateCpfMock->method('validate')
              ->willReturn("Qualquer mensagem de erro");
 
         $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
@@ -62,7 +62,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validateCnpjMock = $this->getMockBuilder('\Validators\Cnpj\ValidateCnpj')
                      ->getMock();
 
-        $validateCnpjMock->method('validateCnpj')
+        $validateCnpjMock->method('validate')
              ->willReturn(true);
 
         $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
@@ -82,7 +82,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $validateCnpjMock = $this->getMockBuilder('\Validators\Cnpj\ValidateCnpj')
                      ->getMock();
 
-        $validateCnpjMock->method('validateCnpj')
+        $validateCnpjMock->method('validate')
              ->willReturn('Qualquer error que possa retornar');
 
         $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')

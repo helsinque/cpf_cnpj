@@ -3,13 +3,16 @@
 namespace Helsinque;
 
 use Helsinque\Factories\TypeFactory;
+use Helsinque\Config;
 
 class Validator
 {
 	private $instance;
 
-	public function __construct()
+	public function __construct(array $options = [])
 	{
+		Config::load($options);
+
 		$reflector = new \ReflectionClass('\\Validators\\Validator');
 		$this->instance = $reflector->newInstanceArgs([new TypeFactory]);
 	}

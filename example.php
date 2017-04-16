@@ -6,9 +6,8 @@ use Helsinque\Validator as Validate;
 
 $document = "42.183.878/0001-50";
 
-$return1 = (new validate)->validate("Cnpj", $document);
+$validate = new Validate();
 
-// $return1 = (new validate)->validate("Bipbop", $document);
+$return=  $validate->validate("Cnpj", $document);
 
-
-echo "\n  $return1 \n";
+echo "\n  $return \n";
