@@ -3,8 +3,10 @@
 namespace Helsinque\Tests;
 
 use Validators\Validator;
-use Exceptions\DocumentValidationException;
 use Helsinque\Factories\TypeFactory;
+
+use Exceptions\DocumentValidationException;
+use Exceptions\InvalidValidatorTypeException;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,13 +27,13 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $validateCpfMock->method('validate')
-             ->willReturn(true);
+            ->willReturn(true);
 
         $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
             ->getMock();
 
         $typeFactoryMock->method('make')
-             ->willReturn($validateCpfMock);
+            ->willReturn($validateCpfMock);
 
         $validator = new Validator($typeFactoryMock);
 
@@ -48,13 +50,30 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
                      ->getMock();
 
         $validateCpfMock->method('validate')
-             ->willThrowException(new \Exception("Erro ao validar campos"));
+            ->willThrowException(new \Exception("Erro ao validar campos"));
 
         $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
             ->getMock();
 
         $typeFactoryMock->method('make')
-             ->willReturn($validateCpfMock);
+            ->willReturn($validateCpfMock);
+
+        $validator = new Validator($typeFactoryMock);
+
+        $validator->validate("Cpf", "");
+    } 
+
+    /**
+     * @expectedException Exceptions\InvalidValidatorTypeException
+     * @expectedExceptionMessage Erro ao construir o objeto
+     */
+    public function testValidateCpfWithUnknowTypeShouldThrowException()
+    {
+        $typeFactoryMock = $this->getMockBuilder('\Helsinque\Factories\TypeFactory')
+            ->getMock();
+
+        $typeFactoryMock->method('make')
+            ->willThrowException(new InvalidValidatorTypeException("Erro ao construir o objeto"));
 
         $validator = new Validator($typeFactoryMock);
 
