@@ -6,8 +6,19 @@ use Validators\Cpf\ValidatorCpf;
 use Validators\Cnpj\ValidatorCnpj;
 use Exceptions\InvalidValidatorTypeException;
 
+/**
+ * Class TypeFactory.
+ *
+ * @author Eduardo Galbiati <eduardo.galbiati7@gmail.com">
+ */
 class TypeFactory
 {
+	/**
+     * make method.
+     *
+     * @param stringt $type
+     * @return \Validators\ValidatorsInterface
+     */
 	static function make($type)
 	{
 		$type = ucfirst(strtolower($type));

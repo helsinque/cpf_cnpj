@@ -2,7 +2,17 @@
 
 namespace Validators;
 
+/**
+ * Interface ValidatorsInterface.
+ *
+ * @author Eduardo Galbiati <eduardo.galbiati7@gmail.com">
+ */
 interface ValidatorsInterface
 {
-	public function validate($string);
+	/**
+     * Validate method.
+     *
+     * @param string $value
+     */
+	public function validate($value);
 }

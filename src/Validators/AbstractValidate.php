@@ -9,15 +9,20 @@ use BIPBOP\Client\Exception;
 use Helsinque\Config;
 
 /**
-*  classe com algoritimos de validações diversas
-*/
-
+ * Class Abstract Validate.
+ *
+ * @author Helsinque Cordeiro <helsinquedeveloper@gmail.com">
+ */
 abstract class AbstractValidate
 {
 
     /**
-    *  Válida tamanho do número informado
-    */
+     * Size of value validation.
+     *
+     * @param string $value
+     * @param string $size
+     * @param string $documento
+     */
     protected function assertSize($value, $size, $documento)
     {
         if (!in_array(strlen($value), (array) $size))
@@ -25,8 +30,13 @@ abstract class AbstractValidate
     }
 
     /**
-    *  realiza cálculos de validação dos documentos
-    */
+     * Digit document validation
+     *
+     * @param string $numDado
+     * @param string $numDig
+     * @param string $limMult
+     * @return string
+     */
     protected function calculateModule11($numDado, $numDig, $limMult)
     {
         $dado = $numDado;
@@ -46,19 +56,18 @@ abstract class AbstractValidate
     } 
 
     /**
-    * Acessando API da BIPBOP
-    * @return XML
-    */
+     * BipBop API Call
+     *
+     * @param string $document
+     * @return XML
+     */
     protected function bipbopValidators($document = null)
     {
         $webService = new WebService(Config::get('API_BIPBOP_KEY'));
         
-        // SELECT FROM 'BIPBOPJS'.'CPFCNPJ'
         try {
-
             $query = sprintf("SELECT FROM 'BIPBOPJS'.'CPFCNPJ' WHERE 'DOCUMENTO' ='%s'", $document);
-            $dom =$webService->post($query); 
-        
+            $dom = $webService->post($query);
         } catch (Exception $e) {
             throw new DocumentValidationException($e->getBIPBOPMessage());
         }        
