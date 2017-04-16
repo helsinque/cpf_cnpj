@@ -95,5 +95,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("Qualquer error que possa retornar", $validator->validate("Cnpj", "111"));
     }
+
+    public function testValidateWhithoutParamsShouldReturnError()
+    {
+        $validator = new Validator(new \Helsinque\Factories\TypeFactory);
+        $this->assertEquals("Informe o parametro", $validator->validate("",""));
+    }
     
 }

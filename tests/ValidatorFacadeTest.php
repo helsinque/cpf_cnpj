@@ -5,7 +5,7 @@ namespace Helsinque\Tests\Factories;
 use Validators\Validator;
 use Helsinque\Validator as HValidator;
 
-class ValidatorFactoryTest extends \PHPUnit_Framework_TestCase
+class ValidatorFacadeTest extends \PHPUnit_Framework_TestCase
 {
 
     public function assertPreConditions()
@@ -18,7 +18,18 @@ class ValidatorFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testInvokeMethod()
     {
-    	$class = new HValidator([]);
+    	$class = new HValidator();
     	$this->assertInstanceOf('\Validators\Validator', $class->getInstance());
     }
+
+    /**
+    * @expectedException Exceptions\InvalidValidatorTypeException
+    */
+    public function testValidateWithUnkownType()
+    {
+        $class = new HValidator();
+        $class->validate('Unkown', '1111');
+    }
+
+
 }

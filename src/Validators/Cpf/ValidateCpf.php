@@ -3,13 +3,14 @@
 namespace Validators\Cpf;
 
 use Validators\AbstractValidate;
+use Validators\ValidatorsInterface;
 use Exceptions\DocumentValidationException;
 use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 
 /**
 *  Válida um documento do tipo CPF
 */
-class ValidateCpf extends AbstractValidate
+class ValidateCpf extends AbstractValidate implements ValidatorsInterface
 {
 
     public $response;

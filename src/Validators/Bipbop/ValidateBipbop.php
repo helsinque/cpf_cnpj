@@ -3,6 +3,7 @@
 namespace Validators\Bipbop;
 
 use Validators\AbstractValidate;
+use Validators\ValidatorsInterface;
 use Validators\Cpf\ValidateCpf;
 use Validators\Cnpj\ValidateCnpj;
 use Exceptions\DocumentValidationException;
@@ -12,7 +13,7 @@ use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 /**
 *  Válida um documento do tipo CPF
 */
-class ValidateBipbop extends AbstractValidate
+class ValidateBipbop extends AbstractValidate implements ValidatorsInterface
 {
 
     public $response;

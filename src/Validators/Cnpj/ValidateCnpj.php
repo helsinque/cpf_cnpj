@@ -3,13 +3,14 @@
 namespace Validators\Cnpj;
 
 use Validators\AbstractValidate;
+use Validators\ValidatorsInterface;
 use Exceptions\DocumentValidationException;
 use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 
 /**
 *  Válida um documento do tipo CNPJ
 */
-class ValidateCnpj extends AbstractValidate
+class ValidateCnpj extends AbstractValidate implements ValidatorsInterface
 {
 
     public $response;
