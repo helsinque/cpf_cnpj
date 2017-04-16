@@ -9,6 +9,8 @@ class TypeFactory
 {
 	static function make($type)
 	{
+		$type = ucfirst(strtolower($type));
+		
 		$reflector = new \ReflectionClass('\\Validators\\'.$type.'\\Validate'.$type);
 		return $reflector->newInstanceArgs();
 	}

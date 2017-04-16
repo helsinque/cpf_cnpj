@@ -13,10 +13,6 @@ class Validator
 {
     private $typeFactory;
 
-    /**
-    * 
-    */
-
     public function __construct(TypeFactory $typeFactory) {
         $this->typeFactory = $typeFactory;
     }
@@ -37,39 +33,5 @@ class Validator
         }
 
         return $result;
-    }
-
-    /**
-    *  Válida um documento direto na API da BIPBOP
-    * @return (string) nome referênte ao documento
-    */
-    
-    public function validateWithBIPBOP($parameter)
-    {
-
-        if (empty($parameter)) {
-            return "Informe um número para validação";
-        }
-
-        try {
-            return $this->validateCpf->validateCpf($parameter)->getName();
-            
-        } catch (DocumentValidationException $e) {
-
-            if (preg_match('/^CPF/', $e->getMessage())) {
-
-                try {
-            
-                    return $this->validateCnpj->validateCnpj($parameter)->getName();
-
-                } catch (DocumentValidationException $e) {
-                    
-                    return $e->getMessage();
-                }
-            }
-
-            return $e->getMessage();
-        }
-
     }    
 }
