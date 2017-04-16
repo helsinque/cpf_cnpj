@@ -8,63 +8,89 @@ use Exceptions\DocumentValidationException;
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testValidator()
-    {
-        $validator = new  Validator();
+    protected $validator;
 
-        $this->assertInstanceOf(Validator::class, $validator);
+    function setUp()
+    {
+        parent::setUp();
+        $this->validator = new Validator(
+            new \Validators\Cpf\ValidateCpf,
+            new \Validators\Cnpj\ValidateCnpj 
+        );
     }
 
-    public function testFunctionValidateCPF()
+    public function assertPreConditions()
     {
-        $validator = new  Validator();
-
-        $this->assertTrue($validator->validateCPF("633.879.090-55"));
+        $this->assertTrue(
+                class_exists($class = 'Validators\Validator'),
+                'Class not found: '.$class
+        );
+        $this->assertInstanceOf('\Validators\Validator', $this->validator);
     }
 
-    public function testFunctionValidateCPFWithoutSeparate()
+    public function testValidateCpfShouldReturnTrue()
     {
-        $validator = new  Validator();
+        $validateCpfMock = $this->getMockBuilder('\Validators\Cpf\ValidatorCpf')
+                     ->getMock();
 
-        $this->assertTrue($validator->validateCPF("63387909055"));
+        $validateCpfMock->method('validateCPF')
+             ->willReturn(true);
+
+        $validator = new Validator(
+            $validateCpfMock,
+            new \Validators\Cnpj\ValidateCnpj 
+        );
+
+        $this->assertTrue($validator->validateCPF("111"));
     }
 
-    public function testEqualsFunctionValidatePossibleErrorsCPF()
+    public function testValidateCpfShouldReturnErrorString()
     {
-        $validator = new  Validator();
+        $validateCpfMock = $this->getMockBuilder('\Validators\Cpf\ValidatorCpf')
+                     ->getMock();
 
-        $this->assertEquals("Informe um número para validação", $validator->validateCPF(""));
+        $validateCpfMock->method('validateCPF')
+             ->willReturn("Qualquer mensagem de erro");
 
-        $this->assertEquals("O CPF informado não é válido", $validator->validateCPF("699.879.090-33"));
+        $validator = new Validator(
+            $validateCpfMock,
+            new \Validators\Cnpj\ValidateCnpj 
+        );
 
-        $this->assertEquals("CPF não possue o tamanho adequado", $validator->validateCPF("34555.56566732.4453"));
-
+        $this->assertEquals("Qualquer mensagem de erro", $validator->validateCPF("111"));
     }
 
-    public function testFunctionValidateCNPJ()
+    public function testValidateCnpjShouldReturnTrue()
     {
-        $validator = new  Validator();
+        $validateCnpjMock = $this->getMockBuilder('\Validators\Cnpj\ValidateCnpj')
+                     ->getMock();
 
-        $this->assertTrue($validator->validateCNPJ("11.720.117/0001-66"));
+        $validateCnpjMock->method('validateCnpj')
+             ->willReturn(true);
+
+        $validator = new Validator(
+            new \Validators\Cpf\ValidateCpf,
+            $validateCnpjMock
+        );
+
+        $this->assertTrue($validator->validateCnpj("111"));
     }
 
-    public function testFunctionValidateCNPJithoutSeparate()
+
+    public function testValidateCnpjShouldReturnErrorString()
     {
-        $validator = new  Validator();
+        $validateCnpjMock = $this->getMockBuilder('\Validators\Cnpj\ValidateCnpj')
+                     ->getMock();
 
-        $this->assertTrue($validator->validateCNPJ("11720117000166"));
-    }
+        $validateCnpjMock->method('validateCnpj')
+             ->willReturn('Qualquer error que possa retornar');
 
-    public function testEqualsFunctionValidatePossibleErrorsCNPJ()
-    {
-        $validator = new  Validator();
+        $validator = new Validator(
+            new \Validators\Cpf\ValidateCpf,
+            $validateCnpjMock
+        );
 
-        $this->assertEquals("Informe um número para validação", $validator->validateCNPJ(""));
-
-        $this->assertEquals("O CNPJ não é válido", $validator->validateCNPJ("22.720.117/1001-66"));
-
-        $this->assertEquals("CNPJ não possue o tamanho adequado", $validator->validateCNPJ("11.720.117/0001-66564999"));
-
+        $this->assertEquals("Qualquer error que possa retornar", $validator->validateCnpj("111"));
     }
     
 }
