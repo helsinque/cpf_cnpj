@@ -16,21 +16,18 @@ class Validator
     private $validateCnpj;
 
     /**
-    * Método construtor serve pra se injetar as depenencias necessárias para esta classe, ou os recursos que ela irá consumir
+    * 
     */
-    public function __construct
-    (
-        \Validators\Cpf\ValidateCpf $validateCpf,
-        \Validators\Cnpj\ValidateCnpj $validateCnpj   
-    ) {
-        $this->validateCpf = $validateCpf;
-        $this->validateCnpj = $validateCnpj;
+    public function __construct()
+    {
+        $this->validateCpf =  new \Validators\Cpf\ValidateCpf;
+        $this->validateCnpj = new \Validators\Cnpj\ValidateCnpj;
     }
 
     /**
     *  Válida um documento do tipo CNPJ
     */
-    public function validateCNPJ(string $value)
+    public function validateCNPJ($value)
     {
 
         if (empty($value)) {
@@ -38,7 +35,8 @@ class Validator
         }
                    
         try {                
-            $result = $this->validateCnpj->validateCnpj($value);
+            $this->validateCnpj->validateCnpj($value);
+            return true;
         } catch (DocumentValidationException $e) {
             return $e->getMessage();
         }
@@ -49,7 +47,7 @@ class Validator
     /**
     *  Válida um documento do tipo CPF
     */
-    public function validateCPF(string $value)
+    public function validateCPF($value)
     {
 
         if (empty($value)) {
@@ -57,7 +55,8 @@ class Validator
         }
         
         try {
-            $result = $this->validateCpf->validateCpf($value);                
+            $this->validateCpf->validateCpf($value);
+            return true;
         } catch (DocumentValidationException $e) {
             return $e->getMessage();
         }
@@ -70,17 +69,15 @@ class Validator
     * @return (string) nome referênte ao documento
     */
     
-   /* public function validateWithBIPBOP($parameter)
+    public function validateWithBIPBOP($parameter)
     {
 
         if (empty($parameter)) {
             return "Informe um número para validação";
         }
 
-        $this->initialize($parameter);
-
         try {
-            return $this->validateCpf->validateCpf($this->data)->getName();
+            return $this->validateCpf->validateCpf($parameter)->getName();
             
         } catch (DocumentValidationException $e) {
 
@@ -88,7 +85,7 @@ class Validator
 
                 try {
             
-                    return $this->validateCnpj->validateCnpj($this->data)->getName();
+                    return $this->validateCnpj->validateCnpj($parameter)->getName();
 
                 } catch (DocumentValidationException $e) {
                     
@@ -99,7 +96,5 @@ class Validator
             return $e->getMessage();
         }
 
-        }
-
-    }    */
+    }    
 }
