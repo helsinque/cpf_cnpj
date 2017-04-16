@@ -12,8 +12,8 @@ use SebastianBergmann\ObjectEnumerator\InvalidArgumentException;
 class ValidateCnpj extends AbstractValidate
 {
 
-    private $response;
-    private $document;
+    public $response;
+    public $document;
 
     function __construct($document = null)
     {

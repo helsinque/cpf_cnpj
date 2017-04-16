@@ -14,8 +14,9 @@ class Validator
     private $typeFactory;
 
     /**
-    * Método construtor serve pra se injetar as depenencias necessárias para esta classe, ou os recursos que ela irá consumir
+    * 
     */
+
     public function __construct(TypeFactory $typeFactory) {
         $this->typeFactory = $typeFactory;
     }
@@ -43,17 +44,15 @@ class Validator
     * @return (string) nome referênte ao documento
     */
     
-   /* public function validateWithBIPBOP($parameter)
+    public function validateWithBIPBOP($parameter)
     {
 
         if (empty($parameter)) {
             return "Informe um número para validação";
         }
 
-        $this->initialize($parameter);
-
         try {
-            return $this->validateCpf->validateCpf($this->data)->getName();
+            return $this->validateCpf->validateCpf($parameter)->getName();
             
         } catch (DocumentValidationException $e) {
 
@@ -61,7 +60,7 @@ class Validator
 
                 try {
             
-                    return $this->validateCnpj->validateCnpj($this->data)->getName();
+                    return $this->validateCnpj->validateCnpj($parameter)->getName();
 
                 } catch (DocumentValidationException $e) {
                     
@@ -72,7 +71,5 @@ class Validator
             return $e->getMessage();
         }
 
-        }
-
-    }    */
+    }    
 }
