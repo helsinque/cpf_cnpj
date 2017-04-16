@@ -19,7 +19,7 @@ class TypeFactory
      * @param  stringt $type
      * @return \Validators\ValidatorsInterface
      */
-    public static function make($type)
+    public function make($type)
     {
         $type = ucfirst(strtolower($type));
 

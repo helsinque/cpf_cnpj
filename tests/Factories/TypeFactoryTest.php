@@ -18,7 +18,8 @@ class TypeFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testMakeMethod()
     {
-    	$class = TypeFactory::make("Cnpj");
+        $typeFactory = new TypeFactory;
+    	$class = $typeFactory->make("Cnpj");
     	$this->assertInstanceOf('\Validators\Cnpj\ValidateCnpj', $class);
     }
 }

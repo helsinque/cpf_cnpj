@@ -43,7 +43,7 @@ class Validator
         }
 
         try {
-            $result = $this->typeFactory::make($type)->validate($value);
+            $result = $this->typeFactory->make($type)->validate($value);
         } catch (DocumentValidationException $e) {
             return $e->getMessage();
         }
