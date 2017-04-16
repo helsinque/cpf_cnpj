@@ -2,7 +2,7 @@
 
 <phpunit backupGlobals="false" 
 		 backupStaticAttributes="false"
-		 bootstrap= "vendor/autoload.php" 
+		 bootstrap= "tests/bootstrap.php" 
 		 colors="true"
 		 convertErrorsToExceptions="true"  
 		 convertNoticesToExceptions="true"
@@ -10,14 +10,17 @@
 		 processIsolation="true"
 		 stopOnFailure="false"
 		 syntaxCheck="false"
-
 >
-
 	<testsuites>
 	    <testsuite name="Validator">
 	      <directory suffix=".php">./tests/</directory>
 	    </testsuite>
   	</testsuites>
+  	<filter>
+        <whitelist>
+            <directory>src</directory>
+        </whitelist>
+    </filter>
   	<logging>
       <log type="coverage-html" target="./tests/codeCoverage" charset="UTF-8"/>
     </logging>
