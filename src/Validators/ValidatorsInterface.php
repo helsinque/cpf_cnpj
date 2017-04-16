@@ -9,10 +9,10 @@ namespace Validators;
  */
 interface ValidatorsInterface
 {
-	/**
+    /**
      * Validate method.
      *
      * @param string $value
      */
-	public function validate($value);
+    public function validate($value);
 }
