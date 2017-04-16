@@ -13,21 +13,21 @@ use Exceptions\InvalidValidatorTypeException;
  */
 class TypeFactory
 {
-	/**
+    /**
      * make method.
      *
-     * @param stringt $type
+     * @param  stringt $type
      * @return \Validators\ValidatorsInterface
      */
-	static function make($type)
-	{
-		$type = ucfirst(strtolower($type));
+    public static function make($type)
+    {
+        $type = ucfirst(strtolower($type));
 
-		if (!class_exists($class = '\\Validators\\'.$type.'\\Validate'.$type)) {
-			throw new InvalidValidatorTypeException("Type: ".$type." is not implemented yet", 1);
-		}
-			
-		$reflector = new \ReflectionClass('\\Validators\\'.$type.'\\Validate'.$type);
-		return $reflector->newInstanceArgs();
-	}
+        if (!class_exists($class = '\\Validators\\'.$type.'\\Validate'.$type)) {
+            throw new InvalidValidatorTypeException("Type: ".$type." is not implemented yet", 1);
+        }
+            
+        $reflector = new \ReflectionClass('\\Validators\\'.$type.'\\Validate'.$type);
+        return $reflector->newInstanceArgs();
+    }
 }

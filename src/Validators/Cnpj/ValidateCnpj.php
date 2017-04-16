@@ -16,7 +16,7 @@ class ValidateCnpj extends AbstractValidate implements ValidatorsInterface
     public $response;
     public $document;
 
-    function __construct($document = null)
+    public function __construct($document = null)
     {
         $this->document = $document;
     }
@@ -32,7 +32,7 @@ class ValidateCnpj extends AbstractValidate implements ValidatorsInterface
             throw new DocumentValidationException($e->getMessage());
         }
         
-       return $result;
+        return $result;
     }
 
     /**
@@ -59,9 +59,8 @@ class ValidateCnpj extends AbstractValidate implements ValidatorsInterface
 
     public function getName()
     {
-        $this->response = self::bipbopValidators($this->response);        
+        $this->response = self::bipbopValidators($this->response);
         $xpath = (new \DOMXPath($this->response))->query('//nome');
-
         return $xpath->item(0)->nodeValue;
     }
     /**
@@ -72,9 +71,9 @@ class ValidateCnpj extends AbstractValidate implements ValidatorsInterface
         $response = preg_replace("/[^\d]/", "", $response);
         self::assertSize($response, [14, 15], "CNPJ");
         $start = strlen($response) == 14 ? 12 : 13;
-        if (self::calculateModule11(substr($response, 0, $start), 2, 9) != substr($response, $start, 2))
-            throw new InvalidArgumentException("O CNPJ não é válido", 1);            
+        if (self::calculateModule11(substr($response, 0, $start), 2, 9) != substr($response, $start, 2)) {
+            throw new InvalidArgumentException("O CNPJ não é válido", 1);
+        }
         return $response;
     }
-    
 }

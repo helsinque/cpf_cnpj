@@ -16,7 +16,7 @@ class ValidateCpf extends AbstractValidate implements ValidatorsInterface
     public $response;
     public $document;
 
-    function __construct($document = null)
+    public function __construct($document = null)
     {
         $this->document = $document;
     }
@@ -32,7 +32,7 @@ class ValidateCpf extends AbstractValidate implements ValidatorsInterface
             throw new DocumentValidationException($e->getMessage());
         }
         
-       return $result;
+        return $result;
     }
 
     /**
@@ -60,7 +60,7 @@ class ValidateCpf extends AbstractValidate implements ValidatorsInterface
 
     public function getName()
     {
-        $this->response = self::bipbopValidators($this->response);                
+        $this->response = self::bipbopValidators($this->response);
         $xpath = (new \DOMXPath($this->response));
 
         if (!$xpath->query('//nome')->length) {
@@ -69,6 +69,7 @@ class ValidateCpf extends AbstractValidate implements ValidatorsInterface
 
         return $xpath->query('//nome')->item(0)->nodeValue;
     }
+    
     /**
     *  Válida tamanho do número informado e cálculo verificador
     */
@@ -76,9 +77,9 @@ class ValidateCpf extends AbstractValidate implements ValidatorsInterface
     {
         $document = preg_replace("/[^\d]/", "", $document);
         self::assertSize($document, 11, "CPF");
-        if (self::calculateModule11(substr($document, 0, 9), 2, 12) != substr($document, 9, 2)){
-            throw new InvalidArgumentException("O CPF informado não é válido",1);
-        }    
+        if (self::calculateModule11(substr($document, 0, 9), 2, 12) != substr($document, 9, 2)) {
+            throw new InvalidArgumentException("O CPF informado não é válido", 1);
+        }
             
         return $document;
     }

@@ -12,7 +12,7 @@ use Helsinque\Factories\TypeFactory;
  *
  * @author Helsinque Cordeiro <helsinquedeveloper@gmail.com">
  */
-class Validator 
+class Validator
 {
     /**
      * @var \Helsinque\Factories\TypeFactory
@@ -24,24 +24,25 @@ class Validator
      *
      * @param \Helsinque\Factories\TypeFactory $typeFactory
      */
-    public function __construct(TypeFactory $typeFactory) {
+    public function __construct(TypeFactory $typeFactory)
+    {
         $this->typeFactory = $typeFactory;
     }
 
     /**
-    * Generic validator
-    *
-    * @param string $type
-    * @param string $value
-    * @return string
-    */
+     * Generic validator
+     *
+     * @param  string $type
+     * @param  string $value
+     * @return string
+     */
     public function validate($type, $value)
     {
         if (empty($value)) {
             return "Informe o parametro";
         }
 
-        try {                
+        try {
             $result = $this->typeFactory::make($type)->validate($value);
         } catch (DocumentValidationException $e) {
             return $e->getMessage();

@@ -12,7 +12,7 @@ abstract class Config
     /**
      * @var Array $config
      */
-    static $config;
+    private static $config;
 
     /**
      * Set method.
@@ -20,7 +20,7 @@ abstract class Config
      * @param string $index
      * @param string $value
      */
-    static public function set($index, $value)
+    public static function set($index, $value)
     {
         self::$config[$index] = $value;
     }
@@ -28,10 +28,10 @@ abstract class Config
     /**
      * Set method.
      *
-     * @param string $index
+     * @param  string $index
      * @return mixed
      */
-    static public function get($index)
+    public static function get($index)
     {
         return self::$config[$index];
     }
@@ -41,7 +41,7 @@ abstract class Config
      *
      * @param array $array
      */
-    static public function load(array $array)
+    public static function load(array $array)
     {
         self::$config = $array;
     }
