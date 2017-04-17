@@ -36,13 +36,11 @@ echo $result; //true
 
 require __DIR__ . '/vendor/autoload.php';
 
-$validate = new Helsinque\Validator();
-
 $config = [
     'API_BIPBOP_KEY' => YOUR_KEY_HERE
 ];
 
-$validate = new Validate($config);
+$validate = new Helsinque\Validator($config);
 
 try {
     $result = $validate->validate("BipBop", "42.183.878/0001-50");
