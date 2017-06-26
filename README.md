@@ -1,5 +1,5 @@
 # cpf_cnpj
-==========================================
+===========================================
 
 Validador PHP para CPF e CNPJ agnóstico de framework. É uma lib criada para uma validação simples de CPF e CNPJ.
 
